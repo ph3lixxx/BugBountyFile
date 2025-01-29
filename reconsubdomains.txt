@@ -1,0 +1,127 @@
+🔵 All Subdomain 🔵
+subfinder -d terget.com -o subfinder.txt
+shodanx subdomain -d target.com -ra -o shodax.txt
+amass enum -active -norecursive -noalts -d rwa.com -o amass.txt
+gobuster dns -d certinia.txt -w /usr/share/wordlists/subdomain_megalist.txt -o gobuster.txt
+curl -s https://crt.sh/\?q\=%.certinia.com\&output\=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u | tee -a subs_domain.txt
+
+
+curl -s https://otx.alienvault.com/api/v1/indicators/hostname/domain.com/passive_dns | jq -r '.passive_dns[]?.hostname' | grep -E ^[a-zA-Z0-9.-]+.domain.com$ | tee alienvault_subs.txt
+
+curl -s "https://urlscan.io/api/v1/search/?q=domain:certinia.com&size=10000" | jq -r '.results[].page.domain' | tee urlscan_subs.txt
+
+curl -s "http://web.archive.org/cdx/search/cdx?url=*.certinia.com/*&output=json&collapse=urlkey" | jq -r '.[1:][].[2]' | grep -Eo "^[a-zA-Z0-9.-]+\.certinia\.com$" | sort -u | tee webarchive_subs.txt
+
+
+🔴 Filtering live hosts with httprobe 🔴
+cat subs_domain.txt | httprobe -td -title -sc -ip > httprobe_domain.com.txt
+
+cat httprobe_domain.com.txt | awk '{print $1}' > live_subs_domain.com.txt
+
+cat live_subs_domain.com.txt | grep -Ei 'asp|php|jsp|jsx|aspx'
+
+httprobe -l live_subs_domain.com.txt -ports 80,443,8080,8443,8000,8888,8081,8181,3366,5432,6379,27017,15672,10000,9090,5900 --threads 80 
+-o alive.txt
+
+🟠 Nmap: 🟠
+naabu -l live_subs_domain.com.txt -c 50 -nmaps -o naabuports.txt
+sudo nmap -sV -sC -iL live_subs_domain.com.txt --script=vuln
+
+🟢 Nikto: 🟢
+nikto -h alive_subdomains.txt -output nikto_results.txt
+
+🍩 Subdomain Takeover: 🍩
+subzy run --targets live_subs_domain.com.txt --concurrency 100 --hide_fails --verify_ssl
+
+🔗 Broken Link Hijacking: 🔗
+socialhunter -f alive_subdomains.txt
+
+📸 Screenshotting 📸
+eyewitness --web -f alive_subdomains.txt --threads 5 -d screenshots
+
+-----------------------------------------
+🛠️ Nuclei Automated Live Subdomains Spray (with rate limit) 🛠️
+nuclei -l subdomain.txt -rl 10 -bs 2 -as -silent -s critical,high,medium
+
+🛡️ Finding WAF (web application firewall) 🛡️
+cat httpx_domain.com.txt | grep 403
+
+✅ Subdomains without WAF ✅
+cat httpx_domain.com.txt | grep -v -E 'cloudfront|imperva|cloudflare' > nowaf_subs_domain.com.txt
+
+📍 Visit All Non-WAF Subdomains Manually 📍
+cat nowaf_subs_domain.com.txt | grep 403 | awk '{print $1}'
+
+🎯 Prepare the List of 403 Subdomains for Fuzzing 🎯
+cat nowaf_subs_domain.com.txt | grep 403 | awk '{print $1}' > 403_subs_domain.com.txt
+
+🎛️ 403 Fuzzing 🎛️
+Default Wordlist Fuzzing
+dirsearch -u https://sub.domain.com -x 403,404,500,400,502,503,429 --random-agent
+
+Extension based Fuzzing
+dirsearch -u https://sub.domain.com -e xml,json,sql,db,log,yml,yaml,bak,txt,tar.gz,zip -x 403,404,500,400,502,503,429 --random-agent
+
+🌟 Next step 🌟
+JavaScript analysis 🌐 ---ok
+
+💜 Google Dorking 💜
+site:http://drive.google.com inurl:folder
+site:http://drive.google.com inurl:open
+site:http://docs.google.com inurl:d
+site:http://drive.google.com "confidential"
+site:http://docs.google.com filetype:docx
+
+site:tesla.com inurl:folder
+site:tesla.com inurl:open
+site:tesla.com filetype:pdf
+site:tesla.com filetype:docx
+site:tesla.com inurl:/docs/
+site:tesla.com inurl:/files/
+site:tesla.com filetype:pptx  
+site:tesla.com filetype:xlsx  
+
+filetype:ini "password" site:orgfiletype:txt "credentials" site:gov
+filetype:yaml "secret_key" -examples
+filetype:key "PRIVATE KEY"
+filetype:pem "PRIVATE KEY"
+filetype:log "debug" "error"
+filetype:log "Stack trace" site:edu
+filetype:log "unable to connect"
+filetype:log "authentication failed"
+filetype:json "db_password" -github
+filetype:db "database" site:org
+filetype:sql "INSERT INTO" "VALUES" site:edu
+filetype:dump "database" site:gov
+"index of" "backup.sql"
+filetype:conf "db_user" site:org
+filetype:config "ftp" site:gov
+filetype:xml "web.config" site:edu
+"index of" "settings.json"
+filetype:env "SECRET_KEY"
+"index of" "api_key"
+filetype:json "api_token"
+filetype:txt "api_secret"
+"admin login" filetype:php
+"index of" "server-status"
+filetype:php "mysql_connect" site:gov
+"admin dashboard" "login"
+filetype:pdf "not for distribution" site:gov
+filetype:xlsx "confidential report" site:edu
+filetype:doc "salary" "employee"
+filetype:docx "restricted access"
+filetype:xlsx | filetype:xls "username" "password" site:gov
+filetype:xlsx | filetype:xls "username" site:gov
+filetype:xlsx | filetype:xls "database" site:gov
+filetype:xlsx | filetype:xls "financial" site:gov
+filetype:xlsx | filetype:xls "password" site:gov
+site:dropbox.com "password"
+site:box.com "confidential"
+site:drive.google.com "important"
+site:onedrive.live.com "restricted"
+site:pastebin.com "password"
+site:github.com "SECRET_KEY"
+site:gitlab.com "PRIVATE_KEY"
+site:bitbucket.org "db_password"
+
+🔹GitHub Recon🔹
