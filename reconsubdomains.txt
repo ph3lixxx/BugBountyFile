@@ -65,6 +65,57 @@ dirsearch -u https://sub.domain.com -e xml,json,sql,db,log,yml,yaml,bak,txt,tar.
 🌟 Next step 🌟
 JavaScript analysis 🌐 ---ok
 
+Important environment files and variables :
+.env  
+.env.local  
+.env.dev  
+.env.production  
+.env.staging  
+.env.testing  
+.env.example  
+.env.backup  
+.env.bak  
+.env.old  
+.env~  
+.env.default  
+/opt/app/.env  
+/home/user/.env
+
+Backup files and old versions :
+index.php.bak  
+config.old  
+config.bak  
+database.sql.gz  
+database_backup.sql  
+database_dump.sql  
+database_export.sql  
+wp-config.php~  
+.htpasswd.bak  
+.htpasswd.old  
+.htaccess.bak  
+.htaccess.old  
+admin.bak  
+backup.zip  
+backup.tar.gz  
+backup.sql  
+backup_old.sql  
+old_version.zip  
+old_config.php
+
+Log and debug files :
+debug.log  
+error.log  
+access.log  
+server.log  
+php_errors.log  
+trace.log  
+system.log  
+log.txt  
+logs/debug.log  
+logs/error.log  
+logs/system.log  
+logs/app.log
+
 💜 Google Dorking 💜
 site:http://drive.google.com inurl:folder
 site:http://drive.google.com inurl:open
