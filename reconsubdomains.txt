@@ -65,6 +65,73 @@ dirsearch -u https://sub.domain.com -e xml,json,sql,db,log,yml,yaml,bak,txt,tar.
 🌟 Next step 🌟
 JavaScript analysis 🌐 ---ok
 
+
+Top 25 JavaScript Path Files used to store sensitive information in Web Application :
+01. /js/config.js
+02. /js/credentials.js
+03. /js/secrets.js
+04. /js/keys.js
+05. /js/password.js
+06. /js/api_keys.js
+07. /js/auth_tokens.js
+08. /js/access_tokens.js
+09. /js/sessions.js
+10. /js/authorization.js 
+11. /js/encryption.js
+12. /js/certificates.js
+13. /js/ssl_keys.js
+14. /js/passphrases.js 
+15. /js/policies.js
+16. /js/permissions.js 
+17. /js/privileges.js
+18. /js/hashes.js
+19. /js/salts.js
+20. /js/nonces.js
+21. /js/signatures.js
+22. /js/digests.js
+23. /js/tokens.js
+24. /js/cookies.js
+25. /js/topsecr3tdonotlook.js
+
+Sensitive Files by Fuzzing Key .git Paths. :
+/.git
+/.gitkeep
+/.git-rewrite
+/.gitreview
+/.git/HEAD
+/.gitconfig
+/.git/index
+/.git/logs
+/.svnignore
+/.gitattributes
+/.gitmodules
+/.svn/entries
+
+Configuration and position-sensitive files :
+config.php  
+config.json  
+config.yaml  
+config.yml  
+config.ini  
+config.xml  
+config.db  
+configuration.php  
+database.yml  
+database.json  
+database.ini  
+database.xml  
+local.config  
+web.config  
+application.properties  
+application.yml  
+connections.ini  
+credentials.json  
+settings.py  
+settings.xml  
+app.config  
+firebase.json  
+aws-credentials
+
 Important environment files and variables :
 .env  
 .env.local  
@@ -175,4 +242,53 @@ site:github.com "SECRET_KEY"
 site:gitlab.com "PRIVATE_KEY"
 site:bitbucket.org "db_password"
 
-🔹GitHub Recon🔹
+💻Targeting GitHub for 💻
+https://gist.github.com/search?l=JSON&q=%22.%2Atesla.com%22
+Manual Approach:
+
+".*tesla.com"
+SECRET OR secret "tesla.com" 
+pass OR password OR passwd "indrive.com"
+credentials OR consumer_key "indrive.com"
+"indrive.com" login       
+"indrive.com" token
+"indrive.com" ftp
+"indrive.com" aws
+"indrive.com" config
+"indrive.com" ldap
+"indrive.com" jenkins
+tesla "-----BEGIN OPENSSH PRIVATE KEY-----"
+tesla "-----BEGIN CERTIFICATE-----"
+tesla "-----BEGIN PRIVATE KEY----"
+"DB_PASSWORD" OR "DATABASE_URL" OR "DATABASE_PASSWORD" OR "DBpasswd"  tesla.com 
+"Company" send_keys            | Password related keyword       | moderate     |
+"Company" QSqlDatabase         | Qt sql framework config        | moderate     |
+"Company" setPassword          | Qt sql password db config      | moderate     |
+"Company" send,keys OR key     | Password related keyword       | moderate     |
+"Company" apiKey OR api_token  | firebase config                | moderate     |
+"Company" databaseURL          | firebase config                | moderate     |
+"Company" storageBucket        | firebase config                | moderate     |
+
+"Company" security_credentials ---> LDAP ( active directories )
+
+"Company" connectionstring ---> Database Cred
+
+"Company" JDBC ---> Database Cred
+
+"Company" ssh2_auth_password ---> unautorized access to servers
+
+"Company" send_keys OR send,keys
+
+
+path:**/.npmrc _auth tasla.com NOT example.com
+path:*/*config.sh password tasla.com NOT example.com
+path:*.pem private key tasla.com
+path:src/*.js tasla.com
+"tasla"language:Python OR bash
+owner:octocat abc
+repo:repo owner name
+
+path:*.env ( NOT homestead NOT root NOT example NOT gmail NOT sample NOT localhost NOT marutise) password outlook.com
+
+(path:*.xml OR path:*.json OR path:*.properties OR path:*.txt OR path:*.log OR path:*.config OR path:*.conf OR path:*.cfg OR path:*.env OR path:*.envrc OR path:*.prod OR path:*.secret OR path:*.private OR path:*.key) AND (access_key OR secret_key OR access_token OR api_key OR apikey OR api_secret OR auth_token OR authsecret OR "sk-") AND (openai OR gpt) "tesla.com" NOT
+(homestead NOT root NOT example NOT gmail NOT sample NOT localhost NOT marutise)
