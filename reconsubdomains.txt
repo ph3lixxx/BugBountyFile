@@ -292,3 +292,13 @@ path:*.env ( NOT homestead NOT root NOT example NOT gmail NOT sample NOT localho
 
 (path:*.xml OR path:*.json OR path:*.properties OR path:*.txt OR path:*.log OR path:*.config OR path:*.conf OR path:*.cfg OR path:*.env OR path:*.envrc OR path:*.prod OR path:*.secret OR path:*.private OR path:*.key) AND (access_key OR secret_key OR access_token OR api_key OR apikey OR api_secret OR auth_token OR authsecret OR "sk-") AND (openai OR gpt) "tesla.com" NOT
 (homestead NOT root NOT example NOT gmail NOT sample NOT localhost NOT marutise)
+
+site:github.com "sk-" OR "api_key" OR "apikey" OR "token" "openai"
+site:github.com "chatgpt" OR "gemini" OR "openai" filename:.env OR filename:config OR filename:yaml
+site:github.com "API_KEY" OR "APIKEY" OR "TOKEN" ext:js OR ext:py
+site:github.com "premium" OR "pro" OR "subscription" "chatgpt" OR "gemini"
+"sk-" AND ("openai" OR "chatgpt") AND ("api_key" OR "apiKey" OR "authorization") site:github.com
+"sk-" AND "OPENAI_API_KEY" extension:env site:github.com
+"sk-" AND "openai.api_key" extension:py site:github.com
+"sk-" AND "process.env.OPENAI_API_KEY" extension:js site:github.com
+
