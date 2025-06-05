@@ -243,8 +243,8 @@ site:gitlab.com "PRIVATE_KEY"
 site:bitbucket.org "db_password"
 
 💻Targeting GitHub for 💻
-https://gist.github.com/search?l=JSON&q=%22.%2Atesla.com%22
-Manual Approach:
+"nasa" path:/wp-config.pjp
+"nasa.org" "password":
 
 ".*tesla.com"
 SECRET OR secret "tesla.com" 
